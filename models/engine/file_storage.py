@@ -14,7 +14,7 @@ class FileStorage:
             return FileStorage.__objects
         else:
             returned_dic = {}
-            for key, value in FileStorage.__objects:
+            for key, value in FileStorage.__objects.items():
                 if key.partition('.')[0] == cls.__name__:
                     returned_dic[key] = value
             return returned_dic
@@ -36,7 +36,7 @@ class FileStorage:
         """delete an object"""
         if obj is not None:
             class_obj_ref = type(obj).__name__ + '.' + obj.id
-            if class_obj_ref in FileStorage.__objects:
+            if class_obj_ref in FileStorage.__objects.keys():
                 del self.__objects[class_obj_ref]
         else:
             return

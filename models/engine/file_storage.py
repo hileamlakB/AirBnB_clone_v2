@@ -60,16 +60,16 @@ class FileStorage:
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
-                try:
                     temp = json.load(f)
                     for key, val in temp.items():
                         self.all()[key] = classes[val['__class__']](**val)
-                except JSONDecodeError as e:
-                    if str(e) == "Expecting value: line 1 column 1 (char 0)":
-                        del FileStorage.__objects
-                        FileStorage.__objects = {}
-                    else:
-                        raise e
-
+               
         except FileNotFoundError:
             pass
+
+    def empty(self):
+        """Empyts both the runtime and the file storage"""
+
+        del FileStorage.__objects
+        FileStorage.__objects = {}
+        self.save()

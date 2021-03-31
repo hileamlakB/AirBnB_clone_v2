@@ -18,7 +18,7 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls is None or FileStorage.__objects is None:
+        if cls is None:
             return FileStorage.__objects
         else:
             returned_dic = {}
@@ -46,8 +46,6 @@ class FileStorage:
             class_obj_ref = type(obj).__name__ + '.' + obj.id
             if class_obj_ref in FileStorage.__objects.keys():
                 del self.__objects[class_obj_ref]
-        else:
-            return
 
     def reload(self):
         """Loads storage dictionary from file"""

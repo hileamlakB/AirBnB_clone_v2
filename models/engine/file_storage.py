@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
-
+from json.decoder import JSONDecodeError
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
@@ -59,8 +59,16 @@ class FileStorage:
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
+                try:
+                    temp = json.load(f)
+                    for key, val in temp.items():
                         self.all()[key] = classes[val['__class__']](**val)
+                except JSONDecodeError as e:
+                    if str(e) == "Expecting value: line 1 column 1 (char 0)":
+                       del FileStorage.__objects
+                       FileStorage.__objects = {}
+                    else:
+                        raise e
+               
         except FileNotFoundError:
             pass

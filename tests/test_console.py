@@ -7,6 +7,7 @@ from unittest.mock import patch
 from console import HBNBCommand
 from io import StringIO
 import re
+import os 
 
 class TestConsole(unittest.TestCase):
     """ 
@@ -48,6 +49,7 @@ class TestCreate(unittest.TestCase):
         Tests the create method with a correcet class name
         """
 
+
         with patch('sys.stdout', new=StringIO()) as out_put:
             HBNBCommand().onecmd("create User")
         clean_output = out_put.getvalue()
@@ -65,11 +67,22 @@ class TestCreate(unittest.TestCase):
         """
         Test the create method with paramaetrs
         """
+
         
+        # delete the database to avoid conflicting
+        # names        
+        try:
+            os.remove('file.json')
+        except Exception:
+            pass
+        with open('file.json', 'w') as _:
+            pass
+        from models import storage as f_storage
+        f_storage.reload()
+
         with patch('sys.stdout', new=StringIO()) as out_put:
             HBNBCommand().onecmd("create Place name=\"California\"")
         clean_output = out_put.getvalue()
-
         self.assertRegex(clean_output, r"\w{8}-\w{4}-\w{4}-\w{4}-\w{12}\n")
         # see if this created object is stored in the file.json
         with open("file.json", "r") as storage:
@@ -82,26 +95,6 @@ class TestCreate(unittest.TestCase):
             self.assertTrue(len(result) == 1)
         # do some more test with other class names
 
-    def test_create_classWithOneParams(self):
-        """
-        Test the create method with paramaetrs
-        """
-        
-        with patch('sys.stdout', new=StringIO()) as out_put:
-            HBNBCommand().onecmd("create Place name=\"California\"")
-        clean_output = out_put.getvalue()
-
-        self.assertRegex(clean_output, r"\w{8}-\w{4}-\w{4}-\w{4}-\w{12}\n")
-        # see if this created object is stored in the file.json
-        with open("file.json", "r") as storage:
-            db = storage.read()
-            # check if the data is stored correclt in the file storage
-            result = re.findall("Place."+clean_output[:-1], db)
-            self.assertTrue(len(result) == 1)
-
-            result = re.findall("\"name\": \"California\"", db)
-            self.assertTrue(len(result) == 1)
-        # do some more test with other class names
 
 
     def test_create_classWithMoreParams(self):
@@ -109,10 +102,21 @@ class TestCreate(unittest.TestCase):
         Test the create method with paramaetrs
         """
         
+        # delete the database to avoid conflicting
+        # names        
+        try:
+            os.remove('file.json')
+        except Exception:
+            pass
+        with open('file.json', 'w') as _:
+            pass
+        from models import storage as f_storage
+        f_storage.reload()
+
         with patch('sys.stdout', new=StringIO()) as out_put:
             HBNBCommand().onecmd("create Place name=\"California\" city_id=\"0001\" user_id=\"0001\"")
-        clean_output = out_put.getvalue()
 
+        clean_output = out_put.getvalue()
         self.assertRegex(clean_output, r"\w{8}-\w{4}-\w{4}-\w{4}-\w{12}\n")
         # see if this created object is stored in the file.json
         with open("file.json", "r") as storage:
@@ -127,7 +131,7 @@ class TestCreate(unittest.TestCase):
             result = re.findall("\"city_id\": \"0001\"", db)
             self.assertTrue(len(result) == 1)
 
-            result = re.findall("\"user_id\": \"001\"", db)
+            result = re.findall("\"user_id\": \"0001\"", db)
             self.assertTrue(len(result) == 1)
         # do some more test with other class names
 
@@ -137,8 +141,19 @@ class TestCreate(unittest.TestCase):
         Test the create method with paramaetrs that have a string value
         """
         
+        # delete the database to avoid conflicting
+        # names        
+        try:
+            os.remove('file.json')
+        except Exception:
+            pass
+        with open('file.json', 'w') as _:
+            pass
+        from models import storage as f_storage
+        f_storage.reload()
+
         with patch('sys.stdout', new=StringIO()) as out_put:
-            HBNBCommand().onecmd("create Place name=\"Double_quote_Inside\"\"")
+            HBNBCommand().onecmd("create Place name=\"Double_quote_Insid\"e\"")
         clean_output = out_put.getvalue()
 
         self.assertRegex(clean_output, r"\w{8}-\w{4}-\w{4}-\w{4}-\w{12}\n")
@@ -148,16 +163,31 @@ class TestCreate(unittest.TestCase):
             # check if the data is stored correclt in the file storage
             result = re.findall("Place."+clean_output[:-1], db)
             self.assertTrue(len(result) == 1)
+            print(db)
 
-            result = re.findall("\"name\": \"Double quote Inside\"\"", db)
+            result = re.findall("\"name\": \"Double quote Insid\\\"e\"", db)
+            print(result)
             self.assertTrue(len(result) == 1)
         # do some more test with other class names
+
     def test_create_valueTypeStrWithSpace(self):
 
         """
         Test the create method with paramaetrs that have a string value
         """
+
+        # delete the database to avoid conflicting
+        # names        
+        try:
+            os.remove('file.json')
+        except Exception:
+            pass
         
+        with open('file.json', 'w') as _:
+            pass
+        from models import storage as f_storage
+        f_storage.reload()
+
         with patch('sys.stdout', new=StringIO()) as out_put:
             HBNBCommand().onecmd("create Place name=\"my_little_house\"")
         clean_output = out_put.getvalue()
@@ -179,6 +209,17 @@ class TestCreate(unittest.TestCase):
         """
         Test the create method with paramaetrs that have a string value
         """
+
+        # delete the database to avoid conflicting
+        # names        
+        try:
+            os.remove('file.json')
+        except Exception:
+            pass
+        with open('file.json', 'w') as _:
+            pass
+        from models import storage as f_storage
+        f_storage.reload()
         
         with patch('sys.stdout', new=StringIO()) as out_put:
             HBNBCommand().onecmd("create Place name=15.6")
@@ -192,15 +233,26 @@ class TestCreate(unittest.TestCase):
             result = re.findall("Place."+clean_output[:-1], db)
             self.assertTrue(len(result) == 1)
 
-            result = re.findall("\"name\": \"15.6\"", db)
+            result = re.findall("\"name\": 15.6", db)
             self.assertTrue(len(result) == 1)
 
-     def test_create_valueTypeInt(self):
+    def test_create_valueTypeInt(self):
 
         """
         Test the create method with paramaetrs that have a string value
         """
-        
+     
+        # delete the database to avoid conflicting
+        # names        
+        try:
+            os.remove('file.json')
+        except Exception:
+            pass
+        with open('file.json', 'w') as _:
+            pass
+        from models import storage as f_storage
+        f_storage.reload()
+ 
         with patch('sys.stdout', new=StringIO()) as out_put:
             HBNBCommand().onecmd("create Place name=15")
         clean_output = out_put.getvalue()
@@ -213,17 +265,28 @@ class TestCreate(unittest.TestCase):
             result = re.findall("Place."+clean_output[:-1], db)
             self.assertTrue(len(result) == 1)
 
-            result = re.findall("\"name\": \"15\"", db)
+            result = re.findall("\"name\": 15", db)
             self.assertTrue(len(result) == 1)
       
-     def test_create_valueTypeWrong(self):
+    def test_create_valueTypeWrong(self):
 
         """
         Test the create method with paramaetrs that have a string value
         """
-        
+       
+        # delete the database to avoid conflicting
+        # names        
+        try:
+            os.remove('file.json')
+        except Exception:
+            pass
+        with open('file.json', 'w') as _:
+            pass
+        from models import storage as f_storage
+        f_storage.reload()
+ 
         with patch('sys.stdout', new=StringIO()) as out_put:
-            HBNBCommand().onecmd("create Place name=" 15"")
+            HBNBCommand().onecmd("create Place name=_15")
         clean_output = out_put.getvalue()
 
         self.assertRegex(clean_output, r"\w{8}-\w{4}-\w{4}-\w{4}-\w{12}\n")
@@ -234,7 +297,7 @@ class TestCreate(unittest.TestCase):
             result = re.findall("Place."+clean_output[:-1], db)
             self.assertTrue(len(result) == 1)
 
-            result = re.findall("\"name\": \" 15\"", db)
+            result = re.findall("\"name\": \"_15\"", db)
             self.assertTrue(len(result) == 0)
                      
 class TestShow(unittest.TestCase):

@@ -129,17 +129,17 @@ class HBNBCommand(cmd.Cmd):
             for param in cls_params:
                 key, value = param.split("=")
                 str_regex = r'\"\w*\"' #STRING regex for the value string
-                float_regex = r'^[0-9]*\.[0-9]' #FLOAT regex for the value string
-                integer_regex = r'\"(.*)\"' #INTEGE regex for the value string
+                float_regex = r'^[0-9]*\.[0-9]$' #FLOAT regex for the value string
+                integer_regex = r'^[0-9]*$' #INTEGE regex for the value string
                 if re.match(str_regex, value):
-                    key_pairs[key] = re.sub(r'_', '\ ', value)
+                    key_pairs[key] = re.sub(r'_', ' ', value)[1:-1]
                 elif re.match(float_regex, value):
                     key_pairs[key] = float(value)
                 elif re.match(integer_regex, value):
                     key_pairs[key] = int(value)
                 else:
                     pass
-
+        key_pairs['__class__'] = params[0]
         new_instance = HBNBCommand.classes[params[0]](**key_pairs)
         storage.save()
         print(new_instance.id)

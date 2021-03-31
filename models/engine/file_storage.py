@@ -3,6 +3,7 @@
 import json
 from json.decoder import JSONDecodeError
 
+
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
@@ -65,10 +66,10 @@ class FileStorage:
                         self.all()[key] = classes[val['__class__']](**val)
                 except JSONDecodeError as e:
                     if str(e) == "Expecting value: line 1 column 1 (char 0)":
-                       del FileStorage.__objects
-                       FileStorage.__objects = {}
+                        del FileStorage.__objects
+                        FileStorage.__objects = {}
                     else:
                         raise e
-               
+
         except FileNotFoundError:
             pass

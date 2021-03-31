@@ -1,7 +1,11 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
+from models import Review, Place, Amenity
+from sqlalchemy import Table, MetaData, Column, Integer, String, ForeignKey, Float, relationship
+
+metadata = Base.metadata
+place_amenity = Table('place_aminity', metadata, Column('place_id', String(60, primarykey=True, ForiegnKey("places.id"))), Column('amenity_id', String(60), ForiegnKey("amenities.id")))
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -16,4 +20,8 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=1)
     latitude = Column(Float)
     longitude = Column(Float)
+    reviews = relationship('Review')
     amenity_ids = []
+    amenities = relationship("Amenity", secondary = place_amenity, backref="places", viewonly=False)
+
+    # Add setter and getters for the filestorage

@@ -195,7 +195,7 @@ class TestCreate(unittest.TestCase):
             result = re.findall("\"name\": \"15.6\"", db)
             self.assertTrue(len(result) == 1)
 
-     def test_create_valueTypeInt(self):
+    def test_create_valueTypeInt(self):
 
         """
         Test the create method with paramaetrs that have a string value
@@ -216,14 +216,14 @@ class TestCreate(unittest.TestCase):
             result = re.findall("\"name\": \"15\"", db)
             self.assertTrue(len(result) == 1)
       
-     def test_create_valueTypeWrong(self):
+    def test_create_valueTypeWrong(self):
 
         """
         Test the create method with paramaetrs that have a string value
         """
         
         with patch('sys.stdout', new=StringIO()) as out_put:
-            HBNBCommand().onecmd("create Place name=" 15"")
+            HBNBCommand().onecmd("create Place name=_15")
         clean_output = out_put.getvalue()
 
         self.assertRegex(clean_output, r"\w{8}-\w{4}-\w{4}-\w{4}-\w{12}\n")

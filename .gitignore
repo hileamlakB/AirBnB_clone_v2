@@ -1,2 +1,4 @@
 main_test*
-*/__pycache__/ 
+*/__pycache__/
+file.json
+*.pyc

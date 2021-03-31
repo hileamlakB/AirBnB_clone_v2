@@ -7,7 +7,6 @@ from unittest.mock import patch
 from console import HBNBCommand
 from io import StringIO
 import re
-import os 
 
 class TestConsole(unittest.TestCase):
     """ 

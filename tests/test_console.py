@@ -71,14 +71,8 @@ class TestCreate(unittest.TestCase):
         
         # delete the database to avoid conflicting
         # names        
-        try:
-            os.remove('file.json')
-        except Exception:
-            pass
-        with open('file.json', 'w') as _:
-            pass
         from models import storage as f_storage
-        f_storage.reload()
+        f_storage.empty()
 
         with patch('sys.stdout', new=StringIO()) as out_put:
             HBNBCommand().onecmd("create Place name=\"California\"")
@@ -104,14 +98,8 @@ class TestCreate(unittest.TestCase):
         
         # delete the database to avoid conflicting
         # names        
-        try:
-            os.remove('file.json')
-        except Exception:
-            pass
-        with open('file.json', 'w') as _:
-            pass
         from models import storage as f_storage
-        f_storage.reload()
+        f_storage.empty()
 
         with patch('sys.stdout', new=StringIO()) as out_put:
             HBNBCommand().onecmd("create Place name=\"California\" city_id=\"0001\" user_id=\"0001\"")
@@ -143,14 +131,8 @@ class TestCreate(unittest.TestCase):
         
         # delete the database to avoid conflicting
         # names        
-        try:
-            os.remove('file.json')
-        except Exception:
-            pass
-        with open('file.json', 'w') as _:
-            pass
         from models import storage as f_storage
-        f_storage.reload()
+        f_storage.empty()
 
         with patch('sys.stdout', new=StringIO()) as out_put:
             HBNBCommand().onecmd("create Place name=\"Double_quote_Insid\"e\"")
@@ -163,10 +145,8 @@ class TestCreate(unittest.TestCase):
             # check if the data is stored correclt in the file storage
             result = re.findall("Place."+clean_output[:-1], db)
             self.assertTrue(len(result) == 1)
-            print(db)
 
-            result = re.findall("\"name\": \"Double quote Insid\\\"e\"", db)
-            print(result)
+            result = re.findall(r'"name": "Double quote Insid\\"e"', db)
             self.assertTrue(len(result) == 1)
         # do some more test with other class names
 
@@ -178,15 +158,8 @@ class TestCreate(unittest.TestCase):
 
         # delete the database to avoid conflicting
         # names        
-        try:
-            os.remove('file.json')
-        except Exception:
-            pass
-        
-        with open('file.json', 'w') as _:
-            pass
         from models import storage as f_storage
-        f_storage.reload()
+        f_storage.empty()
 
         with patch('sys.stdout', new=StringIO()) as out_put:
             HBNBCommand().onecmd("create Place name=\"my_little_house\"")
@@ -212,14 +185,8 @@ class TestCreate(unittest.TestCase):
 
         # delete the database to avoid conflicting
         # names        
-        try:
-            os.remove('file.json')
-        except Exception:
-            pass
-        with open('file.json', 'w') as _:
-            pass
         from models import storage as f_storage
-        f_storage.reload()
+        f_storage.empty()
         
         with patch('sys.stdout', new=StringIO()) as out_put:
             HBNBCommand().onecmd("create Place name=15.6")
@@ -244,14 +211,8 @@ class TestCreate(unittest.TestCase):
      
         # delete the database to avoid conflicting
         # names        
-        try:
-            os.remove('file.json')
-        except Exception:
-            pass
-        with open('file.json', 'w') as _:
-            pass
         from models import storage as f_storage
-        f_storage.reload()
+        f_storage.empty()
  
         with patch('sys.stdout', new=StringIO()) as out_put:
             HBNBCommand().onecmd("create Place name=15")
@@ -276,14 +237,8 @@ class TestCreate(unittest.TestCase):
        
         # delete the database to avoid conflicting
         # names        
-        try:
-            os.remove('file.json')
-        except Exception:
-            pass
-        with open('file.json', 'w') as _:
-            pass
         from models import storage as f_storage
-        f_storage.reload()
+        f_storage.empty()
  
         with patch('sys.stdout', new=StringIO()) as out_put:
             HBNBCommand().onecmd("create Place name=_15")

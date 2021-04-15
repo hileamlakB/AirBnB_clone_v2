@@ -9,6 +9,10 @@ from datetime import datetime
 
 env.arc_src = './web_static'
 env.arc_name = 'web_static_.tgz'
+#env.hosts = ['34.74.94.56', '34.74.11.212']
+# User name and password should prferably be based
+# as environmnt variables rather than explicitly typing them
+# here 
 
 def do_pack():
     """ Packages soruce code into a compressed archive
@@ -28,3 +32,10 @@ def do_pack():
         return env.arc_src+"/versions/{}".format(env.arc_name)
     except:
         return None
+
+def do_deploy(archive_path):
+    """Deploys a achive to a number of remote hosts
+    """ 
+    
+    path_stat = local("if [[ -e %s ]]; then echo 1;else echo 0; fi ", capture=True)
+    print(path_stat) 

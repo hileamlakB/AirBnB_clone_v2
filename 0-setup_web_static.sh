@@ -10,7 +10,7 @@
 # Give ownership of the /data/ folder to the ubuntu user AND group (you can assume this user and group exist). This should be recursive; everything inside should be created/owned by this user/group.
 # Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static (ex: https://mydomainname.tech/hbnb_static). Don’t forget to restart Nginx after updating the configuration:
 
-is_installed=$(which nginx)
+is_installed=`which nginx`
 
 if [[ -z "$is_installed" ]]
 then
@@ -18,20 +18,29 @@ then
   apt install nginx
 fi
 
+rm -rf "/data/web_static"
 mkdir -p "/data/web_static/releases/test/"
-mkdir -p "/data/web_static/releases/shared/"
-mkdir -p "/data/web_static/current/"
+mkdir -p "/data/web_static/shared/"
 
-touch "/data/web_static/releases/test/index.html"
-ln -sf "/data/web_static/releases/test/" "/data/web_static/current"
+printf %s "<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>
+" > /data/web_static/releases/test/index.html
 
-chown -R "/data/" ubuntu@ubuntu
+ln -fs "/data/web_static/releases/test/" "/data/web_static/current"
+
+chown -R ubuntu:ubuntu "/data/"
 
 printf %s "server {
     listen 80;
     listen [::]:80 default_server;
     root   /etc/nginx/html;
     index  index.html index.htm;
+    add_header X-Served-By \$hostname;
 
     location /redirect_me {
         return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;

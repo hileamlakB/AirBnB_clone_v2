@@ -18,20 +18,29 @@ then
   apt install nginx
 fi
 
+rm -rf "/data/web_static"
 mkdir -p "/data/web_static/releases/test/"
-mkdir -p "/data/web_static/releases/shared/"
-mkdir -p "/data/web_static/current/"
+mkdir -p "/data/web_static/shared/"
 
-touch "/data/web_static/releases/test/index.html"
-ln -sf "/data/web_static/releases/test/" "/data/web_static/current"
+printf %s "<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>
+" > /data/web_static/releases/test/index.html
 
-chown -R "/data/" ubuntu@ubuntu
+ln -fs "/data/web_static/releases/test/" "/data/web_static/current"
+
+chown -R ubuntu:ubuntu "/data/"
 
 printf %s "server {
     listen 80;
     listen [::]:80 default_server;
     root   /etc/nginx/html;
     index  index.html index.htm;
+    add_header X-Served-By \$hostname;
 
     location /redirect_me {
         return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
